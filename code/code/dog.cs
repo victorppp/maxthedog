@@ -28,7 +28,6 @@ namespace pieper
         public override void Spawn()
         {
             base.Spawn();
-
             Predictable = true;
 
             var modelName = "model/dog.vmdl";
@@ -61,10 +60,21 @@ namespace pieper
 
             if (!players.Any())
                 return (false, null);
+            bool foundPlayer = false;
 
-            var pickedply = players.ToList()[Game.Random.Int(players.Count() - 1)];
-
-            return (true, (AnimatedEntity)pickedply);
+            while (!foundPlayer) {
+                foreach (var p in players)
+                {
+                    float dis = Position.DistanceSquared(p.Position);
+                    if (dis > (10 * 10))
+                    {
+                        foundPlayer = true;
+                        var pickedply = p;
+                        return (true, (AnimatedEntity)pickedply);
+                    }
+                }
+            }
+            return(false, null);
         }
 
         private void Follow(bool wander = false, float rangeTarget = 0)
