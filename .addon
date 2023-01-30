@@ -1,0 +1,28 @@
+{
+  "Title": "MaxTheDog",
+  "Type": "addon",
+  "Org": "pieper",
+  "Ident": "maxthedog",
+  "Tags": "runtime npc",
+  "Schema": 1,
+  "HasAssets": true,
+  "AssetsPath": "",
+  "ResourcePaths": [
+    "/model/*",
+    "/sounds/*"
+  ],
+  "HasCode": true,
+  "CodePath": "/code/",
+  "Metadata": {
+    "PrimaryAsset": "pieper.Max_dog",
+    "PhysicsMins": "-1,-1,-1",
+    "PhysicsMaxs": "1,1,1",
+    "RenderMins": "-1,-1,-1",
+    "RenderMaxs": "-1,-1,-1",
+    "ParentPackage": "facepunch.sandbox",
+    "Summary": "a following dog",
+    "Description": "a dog that follows you",
+    "Public": true,
+    "ReplaceTags": "animal npc dog runtime"
+  }
+}
