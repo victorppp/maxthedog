@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
+using System.Diagnostics;
 
 namespace pieper
 {
@@ -20,6 +21,7 @@ namespace pieper
         private int currentWander = 0;
         private int wanderLimitRandom = 0;
         private float health = 100f;
+        private bool alive = true;
 
         public float Speed { get; private set; }
 
@@ -102,23 +104,42 @@ namespace pieper
         {
             base.TakeDamage(info);
 
-            health -= info.Damage;
-            PlaySound("damage").SetVolume(5f).SetPitch(Game.Random.Float(1.25f, 1.55f));
+            if (alive)
+            {
+                health -= info.Damage;
+                PlaySound("damage").SetVolume(5f).SetPitch(Game.Random.Float(1.25f, 1.55f));
+            }
 
             Particles.Create("particles/impact.flesh.vpcf", info.Position);
 
             if (health <= 0)
             {
-                Sound.FromWorld(To.Everyone, "death", info.Position).SetVolume(10f);
+                if(alive)
+                {
+                    Sound.FromWorld(To.Everyone, "death", info.Position).SetVolume(10f);
+                    Death();
+                    var modelName = "model/deaddog.vmdl";
+                    SetModel(modelName);
+                    SetupPhysicsFromAABB(PhysicsMotionType.Static, Vector3.Zero, 15f); //Physics
+                    EnableSelfCollisions = true;
+                    PhysicsEnabled = true;
+                    UsePhysicsCollision = true;
+                    EnableSolidCollisions = true;
+                }
+                alive = false;
                 Particles.Create("particles/impact.flesh.bloodpuff.vpcf", info.Position);
-
-                Delete();
             }
+        }
+
+        async public void Death()
+        {
+            await Task.Delay(10000);
+            Delete();
         }
 
         async public void Bark()
         {
-            while (true) {
+            while (alive) {
                 PlaySound("bark").SetVolume(5f);
                 await Task.Delay(Game.Random.Int(10000, 25000));
             }
@@ -127,7 +148,11 @@ namespace pieper
         [Event.Tick.Server]
         protected void Tick()
         {
-             Follow(rangeTarget: RangeTarget());
+            if (alive) 
+            {
+                Follow(rangeTarget: RangeTarget());
+            }
+             
         }
     }
 }
