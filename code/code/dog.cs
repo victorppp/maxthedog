@@ -19,9 +19,9 @@ namespace pieper
         private Vector3 wanderPos = Vector3.Zero;
         private float wanderTime = 0f;
         private int currentWander = 0;
-        private int wanderLimitRandom = 0;
         private float health = 100f;
         private bool alive = true;
+        private bool collisions = true;
 
         public float Speed { get; private set; }
 
@@ -37,10 +37,10 @@ namespace pieper
             Bark();
 
             SetupPhysicsFromAABB(PhysicsMotionType.Static, Vector3.Zero, 15f); //Physics
-            EnableSelfCollisions = true;
-            PhysicsEnabled = true;
-            UsePhysicsCollision = true;
-            EnableSolidCollisions = true;
+            EnableSelfCollisions = collisions;
+            PhysicsEnabled = collisions;
+            UsePhysicsCollision = collisions;
+            EnableSolidCollisions = collisions;
 
             var target = findTarget();
             if (!target.Item1)
@@ -79,6 +79,11 @@ namespace pieper
 
         private void Follow(bool wander = false, float rangeTarget = 0)
         {
+            if (rangeTarget > (900 * 900))
+            {
+                Position = targetPlayer.Position + 50f;
+            }
+
             if (rangeTarget > (200 * 200))
             {
                 Speed = Time.Delta / 4f;
@@ -103,12 +108,11 @@ namespace pieper
             var substracted = ((wander ? wanderPos : targetPlayer.Position) - Position).EulerAngles;
             substracted.pitch /= 10;
             Rotation = substracted.ToRotation();
-     
-            
+
             Position = Position.LerpTo(wander ? wanderPos : (targetPlayer.Position + (Vector3.Up * targetPlayer.PhysicsBody.GetBounds().Size.x)), Speed);
         }
 
-        private float RangeTarget() => Position.DistanceSquared(targetPlayer.Position + (Vector3.Up * targetPlayer.PhysicsBody.GetBounds().Size.z));
+        private float RangeTarget() => Position.DistanceSquared(targetPlayer.Position);
 
         public override void TakeDamage(DamageInfo info)
         {
