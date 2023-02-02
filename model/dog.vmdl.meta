@@ -1,0 +1,25 @@
+{
+  "publish": {
+    "Enabled": true,
+    "ProjectConfig": {
+      "Title": "dog",
+      "Type": "model",
+      "Org": "pieper",
+      "Ident": "dog",
+      "Tags": "dog model",
+      "Schema": 0,
+      "HasAssets": false,
+      "AssetsPath": null,
+      "ResourcePaths": null,
+      "HasCode": false,
+      "CodePath": null,
+      "Metadata": {
+        "SingleAssetSource": "model/dog.vmdl",
+        "Summary": "dog",
+        "Description": "its a dog\n\n\u0022Shiba\u0022 (https://skfb.ly/ozVML) by studiosmash is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).",
+        "Public": true,
+        "ReplaceTags": "dog model animal"
+      }
+    }
+  }
+}
