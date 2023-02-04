@@ -11,6 +11,7 @@ using System.Diagnostics;
 namespace pieper
 {
     //credits to stubborn_birb addon (I used code from it for my addon)
+    //not the best code
     [Spawnable]
     [Library("ent_max_the_dog_npc", Title = "Max the dog")]
     public partial class Max_dog : ModelEntity
@@ -34,7 +35,7 @@ namespace pieper
 
             SetModel(modelName);
 
-            Bark();
+            _ = Bark();
 
             SetupPhysicsFromAABB(PhysicsMotionType.Static, Vector3.Zero, 15f); //Physics
             EnableSelfCollisions = collisions;
@@ -131,7 +132,7 @@ namespace pieper
                 if(alive)
                 {
                     Sound.FromWorld(To.Everyone, "death", info.Position).SetVolume(10f);
-                    Death();
+                    _ = Death();
                     var modelName = "model/deaddog.vmdl";
                     SetModel(modelName);
                     SetupPhysicsFromAABB(PhysicsMotionType.Static, Vector3.Zero, 15f); //Physics
@@ -145,13 +146,13 @@ namespace pieper
             }
         }
 
-        async public void Death()
+        public async Task Death()
         {
             await Task.Delay(10000);
             Delete();
         }
 
-        async public void Bark()
+        public async Task Bark()
         {
             while (alive) {
                 PlaySound("bark").SetVolume(5f);

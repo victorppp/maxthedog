@@ -23,6 +23,7 @@
     "Summary": "a following dog",
     "Description": "a dog that follows you",
     "Public": true,
-    "ReplaceTags": "animal npc dog runtime"
+    "ReplaceTags": "animal npc dog runtime",
+    "CsProjName": ""
   }
 }
