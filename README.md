@@ -1,5 +1,5 @@
 # maxthedog
-a following dog
+a following dog for s&box by facepunch
 
 work in progress
 
