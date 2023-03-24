@@ -1,4 +1,6 @@
 # maxthedog
+First project in s$box
+
 a following dog for s&box game by facepunch: https://sbox.facepunch.com/
 
 Not the best code!
