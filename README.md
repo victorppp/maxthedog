@@ -1,5 +1,5 @@
 # maxthedog
-First project in s$box
+First project in s&box
 
 a following dog for s&box game by facepunch: https://sbox.facepunch.com/
 
