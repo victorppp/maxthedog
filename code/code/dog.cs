@@ -131,7 +131,6 @@ public partial class Max_dog : ModelEntity
         Position = Position.LerpTo(targetPosition, Speed);
     }
 
-
     private float RangeTarget() => Position.DistanceSquared(targetPlayer.Position);
 
     public override void TakeDamage(DamageInfo info)
