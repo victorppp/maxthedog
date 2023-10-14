@@ -7,45 +7,50 @@
 		<PackageId>maxthedog</PackageId>
 		<LangVersion>11</LangVersion>
 		<NoWarn>1701;1702;1591;</NoWarn>
+		<WarningsAsErrors></WarningsAsErrors>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<DefineConstants>SANDBOX;ADDON;DEBUG</DefineConstants>
+		<AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+		<DefaultItemExcludes>$(DefaultItemExcludes);**\editor\**\*;**\unittest\**\*</DefaultItemExcludes>
+
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Update="**\*.scss" DependentUpon="%(Filename).cs" />
-		<None Update="**\*.css" DependentUpon="%(Filename).cs" />
-		<None Update="**\*.sass" DependentUpon="%(Filename).cs" />
-		<None Update="**\*.html" DependentUpon="%(Filename).cs" />
-		<None Update="**\*.htm" DependentUpon="%(Filename).cs" />
+		
+		<None Update="**\*.cs.scss" DependentUpon="%(Filename)" />
+		<Compile Update="**\*.razor.cs" DependentUpon="%(Filename)" />
+		<None Update="**\*.razor.scss" DependentUpon="%(Filename)" />
+
 	</ItemGroup>
 
 	<ItemGroup>
-	  <AdditionalFiles Include="**/*.razor" />
+		<AdditionalFiles Include="**/*.razor" />
 	</ItemGroup>
+
+
 
 	<ItemGroup>
 		<Using Include="Sandbox.Internal.GlobalGameNamespace" Static="true" />
 	</ItemGroup>
 
   <PropertyGroup>
-	<OutputPath>B:\SteamLibrary\steamapps\common\sbox/.vs/output/</OutputPath>
-	<DocumentationFile>B:\SteamLibrary\steamapps\common\sbox/.vs/output/maxthedog.xml</DocumentationFile>
+	<OutputPath>D:\SteamLibrary\steamapps\common\sbox/.vs/output/</OutputPath>
+	<DocumentationFile>D:\SteamLibrary\steamapps\common\sbox/.vs/output/maxthedog.xml</DocumentationFile>
 	<RootNamespace>Sandbox</RootNamespace>
 	<Nullable>disable</Nullable>
   </PropertyGroup>
 
 	<ItemGroup>
-		<Analyzer Include="B:\SteamLibrary\steamapps\common\sbox\bin\managed\Sandbox.Generator.dll"/>
-		<Reference Include="B:\SteamLibrary\steamapps\common\sbox\bin\managed/Sandbox.System.dll" />
-		<Reference Include="B:\SteamLibrary\steamapps\common\sbox\bin\managed/Sandbox.Engine.dll" />
-		<Reference Include="B:\SteamLibrary\steamapps\common\sbox\bin\managed/Sandbox.Game.dll" />
-		<Reference Include="B:\SteamLibrary\steamapps\common\sbox\bin\managed/Sandbox.Event.dll" />
-		<Reference Include="B:\SteamLibrary\steamapps\common\sbox\bin\managed/Sandbox.Bind.dll" />
-		<Reference Include="B:\SteamLibrary\steamapps\common\sbox\bin\managed/Sandbox.Reflection.dll" />
+		<Analyzer Include="D:\SteamLibrary\steamapps\common\sbox\bin\managed\Sandbox.Generator.dll"/>
+		<Reference Include="D:\SteamLibrary\steamapps\common\sbox\bin\managed/Sandbox.System.dll" />
+		<Reference Include="D:\SteamLibrary\steamapps\common\sbox\bin\managed/Sandbox.Engine.dll" />
+		<Reference Include="D:\SteamLibrary\steamapps\common\sbox\bin\managed/Sandbox.Game.dll" />
+		<Reference Include="D:\SteamLibrary\steamapps\common\sbox\bin\managed/Sandbox.Event.dll" />
+		<Reference Include="D:\SteamLibrary\steamapps\common\sbox\bin\managed/Sandbox.Reflection.dll" />
 	</ItemGroup>
 
   <ItemGroup>
-		<Reference Include="B:\SteamLibrary\steamapps\common\sbox\.source2\references\facepunch.sandbox.13598.dll" />
+		<ProjectReference Include="D:\SteamLibrary\steamapps\common\sbox\addons\base\code\Base Library.csproj" />
 
   </ItemGroup>
 

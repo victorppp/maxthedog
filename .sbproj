@@ -1,0 +1,24 @@
+{
+  "Title": "MaxTheDog",
+  "Type": "addon",
+  "Org": "pieper",
+  "Ident": "maxthedog",
+  "Tags": "animal npc dog runtime",
+  "Schema": 1,
+  "HasAssets": true,
+  "AssetsPath": "",
+  "Resources": null,
+  "MenuResources": null,
+  "HasCode": true,
+  "CodePath": "/code/",
+  "PackageReferences": [],
+  "EditorReferences": null,
+  "Metadata": {
+    "CsProjName": "",
+    "PrimaryAsset": "ent_max_the_dog_npc",
+    "PhysicsMins": "-1,-1,-1",
+    "PhysicsMaxs": "1,1,1",
+    "RenderMins": "-1,-1,-1",
+    "RenderMaxs": "-1,-1,-1"
+  }
+}

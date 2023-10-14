@@ -1,31 +1,45 @@
 {
   "version": 3,
   "targets": {
-    "net7.0": {}
+    "net7.0": {
+      "Base Library/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v7.0",
+        "compile": {
+          "bin/placeholder/Base Library.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Base Library.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "Base Library/1.0.0": {
+      "type": "project",
+      "path": "D:\\SteamLibrary\\steamapps\\common\\sbox\\addons\\base\\code\\Base Library.csproj",
+      "msbuildProject": "D:\\SteamLibrary\\steamapps\\common\\sbox\\addons\\base\\code\\Base Library.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    "net7.0": []
+    "net7.0": [
+      "Base Library >= 1.0.0"
+    ]
   },
   "packageFolders": {
-    "C:\\Users\\victo\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\victo\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\victo\\Documents\\s&box projects\\maxthedog\\code\\maxthedog.csproj",
-      "projectName": "maxthedog",
-      "projectPath": "C:\\Users\\victo\\Documents\\s&box projects\\maxthedog\\code\\maxthedog.csproj",
+      "projectUniqueName": "c:\\users\\victo\\documents\\s&box projects\\pieper.maxthedog\\code\\MaxTheDog.csproj",
+      "projectName": "MaxTheDog",
+      "projectPath": "c:\\users\\victo\\documents\\s&box projects\\pieper.maxthedog\\code\\MaxTheDog.csproj",
       "packagesPath": "C:\\Users\\victo\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\victo\\Documents\\s&box projects\\maxthedog\\code\\obj\\",
+      "outputPath": "c:\\users\\victo\\documents\\s&box projects\\pieper.maxthedog\\code\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
         "C:\\Users\\victo\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -38,13 +52,12 @@
       "frameworks": {
         "net7.0": {
           "targetAlias": "net7.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "D:\\SteamLibrary\\steamapps\\common\\sbox\\addons\\base\\code\\Base Library.csproj": {
+              "projectPath": "D:\\SteamLibrary\\steamapps\\common\\sbox\\addons\\base\\code\\Base Library.csproj"
+            }
+          }
         }
-      },
-      "warningProperties": {
-        "warnAsError": [
-          "NU1605"
-        ]
       }
     },
     "frameworks": {
@@ -66,7 +79,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.102\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.302\\RuntimeIdentifierGraph.json"
       }
     }
   }

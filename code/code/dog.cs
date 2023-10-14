@@ -1,173 +1,202 @@
-﻿using Sandbox.UI;
-using Sandbox;
-using System;
-using System.Collections.Generic;
+﻿using Sandbox;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Reflection;
-using System.Diagnostics;
 
-namespace pieper
+namespace pieper;
+
+[Spawnable]
+[Library("ent_max_the_dog_npc", Title = "Max the dog")]
+public partial class Max_dog : ModelEntity
 {
-    //credits to stubborn_birb addon (I used code from it for my addon)
-    //not the best code
-    [Spawnable]
-    [Library("ent_max_the_dog_npc", Title = "Max the dog")]
-    public partial class Max_dog : ModelEntity
+    private const float DEFAULT_HEALTH = 100f;
+    private const string ALIVE_MODEL_NAME = "model/dog.vmdl";
+    private const string DEAD_MODEL_NAME = "model/deaddog.vmdl";
+    private const int PHYSICS_SIZE = 15;
+    private const string DAMAGE_SOUND = "damage";
+    private const string DEATH_SOUND = "death";
+    private const string BARK_SOUND = "bark";
+    private const string IMPACT_PARTICLE = "particles/impact.flesh.vpcf";
+    private const string BLOOD_PARTICLE = "particles/impact.flesh.bloodpuff.vpcf";
+    private const float DAMAGE_SOUND_VOLUME = 5f;
+    private const float DEATH_SOUND_VOLUME = 10f;
+    private const int DEATH_DELAY = 10000;
+
+    private AnimatedEntity targetPlayer;
+    private Vector3 wanderPos = Vector3.Zero;
+    private float wanderTime = 0f;
+    private int currentWander = 0;
+    private float health = DEFAULT_HEALTH;
+    private bool alive = true;
+
+    public float Speed { get; private set; }
+
+    public override void Spawn()
     {
-        private AnimatedEntity targetPlayer;
-        private Vector3 wanderPos = Vector3.Zero;
-        private float wanderTime = 0f;
-        private int currentWander = 0;
-        private float health = 100f;
-        private bool alive = true;
-        private bool collisions = true;
+        base.Spawn();
+        Predictable = true;
 
-        public float Speed { get; private set; }
+        SetModel(ALIVE_MODEL_NAME);
+        SetCollisions(true);
+        _ = Bark();
 
-        public override void Spawn()
+        var (found, player) = FindTarget();
+        if (!found)
         {
-            base.Spawn();
-            Predictable = true;
-
-            var modelName = "model/dog.vmdl";
-
-            SetModel(modelName);
-
-            _ = Bark();
-
-            SetupPhysicsFromAABB(PhysicsMotionType.Static, Vector3.Zero, 15f); //Physics
-            EnableSelfCollisions = collisions;
-            PhysicsEnabled = collisions;
-            UsePhysicsCollision = collisions;
-            EnableSolidCollisions = collisions;
-
-            var target = findTarget();
-            if (!target.Item1)
-            {
-                Delete();
-                Log.Error("There is no any player!");
-                return;
-            }
-
-            targetPlayer = target.Item2;
-
-        }
-
-        private (bool, AnimatedEntity) findTarget()
-        {
-            var players = All.Where(x => x.Tags.Has("player"));
-
-            if (!players.Any())
-                return (false, null);
-            bool foundPlayer = false;
-
-            while (!foundPlayer) {
-                foreach (var p in players)
-                {
-                    float dis = Position.DistanceSquared(p.Position);
-                    if (dis > (10 * 10))
-                    {
-                        foundPlayer = true;
-                        var pickedply = p;
-                        return (true, (AnimatedEntity)pickedply);
-                    }
-                }
-            }
-            return(false, null);
-        }
-
-        private void Follow(bool wander = false, float rangeTarget = 0)
-        {
-            if (rangeTarget > (900 * 900))
-            {
-                Position = targetPlayer.Position + 50f;
-            }
-
-            if (rangeTarget > (200 * 200))
-            {
-                Speed = Time.Delta / 4f;
-            }
-            else
-            {
-                wander = true;
-            }
-
-            if (wander)
-            {
-                if (wanderTime < Time.Now)
-                {
-                    wanderPos = (new Vector3(1, 1, 0) * (Position + Vector3.Random * 200f)) + (Vector3.Up * (Position + Vector3.Random * 10f)); //Z-axis should be less
-                    wanderTime = Time.Now + 1;
-                    currentWander++;
-                }
-            }
-            else
-                currentWander = 0;
-
-            var substracted = ((wander ? wanderPos : targetPlayer.Position) - Position).EulerAngles;
-            substracted.pitch /= 10;
-            Rotation = substracted.ToRotation();
-
-            Position = Position.LerpTo(wander ? wanderPos : (targetPlayer.Position + (Vector3.Up * targetPlayer.PhysicsBody.GetBounds().Size.x)), Speed);
-        }
-
-        private float RangeTarget() => Position.DistanceSquared(targetPlayer.Position);
-
-        public override void TakeDamage(DamageInfo info)
-        {
-            base.TakeDamage(info);
-
-            if (alive)
-            {
-                health -= info.Damage;
-                PlaySound("damage").SetVolume(5f).SetPitch(Game.Random.Float(1.25f, 1.55f));
-            }
-
-            Particles.Create("particles/impact.flesh.vpcf", info.Position);
-
-            if (health <= 0)
-            {
-                if(alive)
-                {
-                    Sound.FromWorld(To.Everyone, "death", info.Position).SetVolume(10f);
-                    _ = Death();
-                    var modelName = "model/deaddog.vmdl";
-                    SetModel(modelName);
-                    SetupPhysicsFromAABB(PhysicsMotionType.Static, Vector3.Zero, 15f); //Physics
-                    EnableSelfCollisions = true;
-                    PhysicsEnabled = true;
-                    UsePhysicsCollision = true;
-                    EnableSolidCollisions = true;
-                }
-                alive = false;
-                Particles.Create("particles/impact.flesh.bloodpuff.vpcf", info.Position);
-            }
-        }
-
-        public async Task Death()
-        {
-            await Task.Delay(10000);
             Delete();
+            Log.Error("No player found!");
+            return;
         }
 
-        public async Task Bark()
+        targetPlayer = player;
+    }
+
+    private void SetCollisions(bool state)
+    {
+        SetupPhysicsFromAABB(PhysicsMotionType.Static, Vector3.Zero, PHYSICS_SIZE);
+        EnableSelfCollisions = state;
+        PhysicsEnabled = state;
+        UsePhysicsCollision = state;
+        EnableSolidCollisions = state;
+    }
+
+    private static (bool found, AnimatedEntity player) FindTarget()
+    {
+        var player = All.Where(x => x.Tags.Has("player") && x.IsPawn);
+
+        return player.Any() ? (true, (AnimatedEntity)player.First()) : (false, null);
+    }
+
+    private void Follow(bool wander = false, float rangeTarget = 0)
+    {
+        UpdatePositionBasedOnRange(rangeTarget);
+        UpdateSpeedAndWanderingStatus(rangeTarget, ref wander);
+        UpdateWanderingPositionIfNecessary(wander);
+
+        UpdateEntityRotation(wander);
+        LerpEntityPosition(wander);
+    }
+
+    private void UpdatePositionBasedOnRange(float rangeTarget)
+    {
+        const int FAR_RANGE_SQUARE = 900 * 900;
+
+        if (rangeTarget > FAR_RANGE_SQUARE)
         {
-            while (alive) {
-                PlaySound("bark").SetVolume(5f);
-                await Task.Delay(Game.Random.Int(10000, 25000));
-            }
+            Position = targetPlayer.Position + 50f;
+        }
+    }
+
+    private void UpdateSpeedAndWanderingStatus(float rangeTarget, ref bool wander)
+    {
+        const int CLOSE_RANGE_SQUARE = 200 * 200;
+
+        if (rangeTarget > CLOSE_RANGE_SQUARE)
+        {
+            Speed = Time.Delta / 4f;
+        }
+        else
+        {
+            wander = true;
+        }
+    }
+
+    private void UpdateWanderingPositionIfNecessary(bool wander)
+    {
+        if (wander && wanderTime < Time.Now)
+        {
+            wanderPos = (new Vector3(1, 1, 0) * (Position + Vector3.Random * 200f)) + (Vector3.Up * (Position + Vector3.Random * 10f)); // Z-axis should be less
+            wanderTime = Time.Now + 1;
+            currentWander++;
+        }
+        else if (!wander)
+        {
+            currentWander = 0;
+        }
+    }
+
+    private void UpdateEntityRotation(bool wander)
+    {
+        var targetPosition = wander ? wanderPos : targetPlayer.Position;
+        var rotationDelta = (targetPosition - Position).EulerAngles;
+
+        rotationDelta.pitch /= 10;
+        Rotation = rotationDelta.ToRotation();
+    }
+
+    private void LerpEntityPosition(bool wander)
+    {
+        var targetPosition = wander
+            ? wanderPos
+            : targetPlayer.Position + (Vector3.Up * targetPlayer.PhysicsBody.GetBounds().Size.x);
+        Position = Position.LerpTo(targetPosition, Speed);
+    }
+
+
+    private float RangeTarget() => Position.DistanceSquared(targetPlayer.Position);
+
+    public override void TakeDamage(DamageInfo info)
+    {
+        base.TakeDamage(info);
+
+        if (alive)
+        {
+            ProcessAliveDamage(info.Damage);
         }
 
-        [Event.Tick.Server]
-        protected void Tick()
+        CreateParticle(IMPACT_PARTICLE, info.Position);
+
+        if (health <= 0 && alive)
         {
-            if (alive) 
-            {
-                Follow(rangeTarget: RangeTarget());
-            }
-             
+            HandleDeath(info.Position);
+        }
+    }
+
+    private void ProcessAliveDamage(float damage)
+    {
+        health -= damage;
+        PlaySound(DAMAGE_SOUND)
+            .SetVolume(DAMAGE_SOUND_VOLUME)
+            .SetPitch(Game.Random.Float(1.25f, 1.55f));
+    }
+
+    private void HandleDeath(Vector3 deathPosition)
+    {
+        Sound.FromWorld(To.Everyone, DEATH_SOUND, deathPosition)
+            .SetVolume(DEATH_SOUND_VOLUME);
+
+        _ = Death();
+        SetModel(DEAD_MODEL_NAME);
+        SetCollisions(true);
+        alive = false;
+
+        CreateParticle(BLOOD_PARTICLE, deathPosition);
+    }
+
+    private static void CreateParticle(string particle, Vector3 position)
+    {
+        Particles.Create(particle, position);
+    }
+
+    public async Task Death()
+    {
+        await Task.Delay(DEATH_DELAY);
+        Delete();
+    }
+
+    public async Task Bark()
+    {
+        if (alive) {
+            PlaySound(BARK_SOUND).SetVolume(5f);
+            await Task.Delay(Game.Random.Int(10000, 25000));
+        }
+    }
+
+    [GameEvent.Tick.Server]
+    protected void Tick()
+    {
+        if (alive) 
+        {
+            Follow(rangeTarget: RangeTarget());
         }
     }
 }
