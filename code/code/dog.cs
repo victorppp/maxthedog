@@ -30,7 +30,6 @@ public partial class Max_dog : ModelEntity
     private bool alive = true;
     private static Random rnd = new Random();
 
-
     public float Speed { get; private set; }
 
     public override void Spawn()
@@ -106,7 +105,7 @@ public partial class Max_dog : ModelEntity
     {
         if (wander && wanderTime < Time.Now)
         {
-            wanderPos = (new Vector3(1, 1, 0) * (Position + Vector3.Random * 200f)) + (Vector3.Up * (Position + Vector3.Random * 10f)); // Z-axis should be less
+            wanderPos = (new Vector3(1, 1, 0) * (Position + Vector3.Random * 200f)) + (Vector3.Up * (Position + Vector3.Random * 10f));
             wanderTime = Time.Now + 1;
             currentWander++;
         }
