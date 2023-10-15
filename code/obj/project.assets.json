@@ -11,6 +11,19 @@
         "runtime": {
           "bin/placeholder/Base Library.dll": {}
         }
+      },
+      "sandbox/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v7.0",
+        "dependencies": {
+          "Base Library": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/sandbox.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/sandbox.dll": {}
+        }
       }
     }
   },
@@ -19,11 +32,16 @@
       "type": "project",
       "path": "D:\\SteamLibrary\\steamapps\\common\\sbox\\addons\\base\\code\\Base Library.csproj",
       "msbuildProject": "D:\\SteamLibrary\\steamapps\\common\\sbox\\addons\\base\\code\\Base Library.csproj"
+    },
+    "sandbox/1.0.0": {
+      "type": "project",
+      "path": "../../facepunch.sandbox/code/sandbox.csproj",
+      "msbuildProject": "../../facepunch.sandbox/code/sandbox.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net7.0": [
-      "Base Library >= 1.0.0"
+      "sandbox >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -32,9 +50,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\users\\victo\\documents\\s&box projects\\pieper.maxthedog\\code\\MaxTheDog.csproj",
-      "projectName": "MaxTheDog",
-      "projectPath": "c:\\users\\victo\\documents\\s&box projects\\pieper.maxthedog\\code\\MaxTheDog.csproj",
+      "projectUniqueName": "c:\\users\\victo\\documents\\s&box projects\\pieper.maxthedog\\code\\maxthedog.csproj",
+      "projectName": "maxthedog",
+      "projectPath": "c:\\users\\victo\\documents\\s&box projects\\pieper.maxthedog\\code\\maxthedog.csproj",
       "packagesPath": "C:\\Users\\victo\\.nuget\\packages\\",
       "outputPath": "c:\\users\\victo\\documents\\s&box projects\\pieper.maxthedog\\code\\obj\\",
       "projectStyle": "PackageReference",
@@ -53,8 +71,8 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "D:\\SteamLibrary\\steamapps\\common\\sbox\\addons\\base\\code\\Base Library.csproj": {
-              "projectPath": "D:\\SteamLibrary\\steamapps\\common\\sbox\\addons\\base\\code\\Base Library.csproj"
+            "c:\\users\\victo\\documents\\s&box projects\\facepunch.sandbox\\code\\sandbox.csproj": {
+              "projectPath": "c:\\users\\victo\\documents\\s&box projects\\facepunch.sandbox\\code\\sandbox.csproj"
             }
           }
         }

@@ -1,4 +1,5 @@
 ﻿using Sandbox;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -27,6 +28,8 @@ public partial class Max_dog : ModelEntity
     private int currentWander = 0;
     private float health = DEFAULT_HEALTH;
     private bool alive = true;
+    private static Random rnd = new Random();
+
 
     public float Speed { get; private set; }
 
@@ -61,8 +64,7 @@ public partial class Max_dog : ModelEntity
 
     private static (bool found, AnimatedEntity player) FindTarget()
     {
-        var player = All.Where(x => x.Tags.Has("player") && x.IsPawn);
-
+        var player = All.Where(x => x.Tags.Has("player") && x.Owner.ToString() == Game.SteamId.ToString() + "/" + Game.UserName.ToString());
         return player.Any() ? (true, (AnimatedEntity)player.First()) : (false, null);
     }
 
@@ -199,4 +201,3 @@ public partial class Max_dog : ModelEntity
         }
     }
 }
-

@@ -50,7 +50,7 @@
 	</ItemGroup>
 
   <ItemGroup>
-		<ProjectReference Include="D:\SteamLibrary\steamapps\common\sbox\addons\base\code\Base Library.csproj" />
+		<ProjectReference Include="c:\users\victo\documents\s&amp;box projects\facepunch.sandbox\code\sandbox.csproj" />
 
   </ItemGroup>
 
