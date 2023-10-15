@@ -28,7 +28,6 @@ public partial class Max_dog : ModelEntity
     private int currentWander = 0;
     private float health = DEFAULT_HEALTH;
     private bool alive = true;
-    private static Random rnd = new Random();
 
     public float Speed { get; private set; }
 
